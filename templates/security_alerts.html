@@ -1,0 +1,320 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Security Alerts | SecureIAM</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .alerts-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .alerts-header h1 {
+            margin: 0 0 8px;
+            color: #0f172a;
+            font-size: 30px;
+        }
+
+        .alerts-subtitle {
+            margin: 0;
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        .back-link {
+            display: inline-block;
+            padding: 10px 15px;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #2563eb;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            background: #eff6ff;
+            text-decoration: none;
+        }
+
+        .alerts-summary {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 22px 24px;
+            margin-bottom: 24px;
+            background: #ffffff;
+            border: 1px solid #dbe4f0;
+            border-radius: 14px;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+        }
+
+        .summary-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            background: #fee2e2;
+            color: #b91c1c;
+            font-size: 25px;
+        }
+
+        .summary-label {
+            margin: 0 0 4px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .summary-value {
+            margin: 0;
+            color: #b91c1c;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .alerts-section {
+            margin-bottom: 28px;
+        }
+
+        .section-heading {
+            margin: 0 0 18px;
+            color: #172b4d;
+            font-size: 21px;
+        }
+
+        .alert-card {
+            padding: 22px 24px;
+            margin-bottom: 16px;
+            background: #ffffff;
+            border: 1px solid #fecaca;
+            border-left: 5px solid #dc2626;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+        }
+
+        .alert-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .alert-title {
+            margin: 0;
+            color: #b91c1c;
+            font-size: 17px;
+            font-weight: 700;
+            overflow-wrap: anywhere;
+        }
+
+        .alert-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 6px;
+            background: #fee2e2;
+            color: #b91c1c;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .alert-details {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .detail-label {
+            display: block;
+            margin-bottom: 5px;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .detail-value {
+            color: #334155;
+            font-size: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        .no-alerts {
+            padding: 36px 24px;
+            background: #ffffff;
+            border: 1px solid #bbf7d0;
+            border-radius: 14px;
+            text-align: center;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+        }
+
+        .no-alerts-icon {
+            display: block;
+            margin-bottom: 12px;
+            color: #15803d;
+            font-size: 36px;
+        }
+
+        .no-alerts h2 {
+            margin: 0 0 8px;
+            color: #166534;
+            font-size: 21px;
+        }
+
+        .no-alerts p {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .alerts-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .alerts-header h1 {
+                font-size: 26px;
+            }
+
+            .alerts-summary {
+                padding: 18px;
+            }
+
+            .alert-card {
+                padding: 18px;
+            }
+
+            .alert-details {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <h2>SecureIAM</h2>
+
+        <div class="nav-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/admin">Admin</a>
+            <a href="/users">Manage Users</a>
+            <a href="/security-logs">Security Logs</a>
+            <a href="/security-alerts" aria-current="page">
+                Security Alerts
+            </a>
+            
+<form action="{{ url_for('logout') }}" method="POST" style="display: inline;">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit" class="logout-button">Logout</button>
+</form>
+
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <main class="container">
+
+        <header class="alerts-header">
+            <div>
+                <h1>Security Alerts</h1>
+                <p class="alerts-subtitle">
+                    Review suspicious authentication activity detected by SecureIAM.
+                </p>
+            </div>
+
+            <a href="/admin" class="back-link">
+                &larr; Back to Admin Dashboard
+            </a>
+        </header>
+
+        {% if alerts %}
+
+            <!-- Alert count -->
+            <section class="alerts-summary">
+                <div class="summary-icon" aria-hidden="true">!</div>
+
+                <div>
+                    <p class="summary-label">Recorded Security Alerts</p>
+                    <p class="summary-value">{{ alerts|length }}</p>
+                </div>
+            </section>
+
+            <!-- Alert list -->
+            <section class="alerts-section">
+                <h2 class="section-heading">Detected Events</h2>
+
+                {% for alert in alerts %}
+                    <article class="alert-card">
+
+                        <div class="alert-top">
+                            <h3 class="alert-title">
+                                {{ alert[1] }}
+                            </h3>
+
+                            <span class="alert-badge">Security Alert</span>
+                        </div>
+
+                        <div class="alert-details">
+                            <div>
+                                <span class="detail-label">Username</span>
+                                <span class="detail-value">
+                                    {{ alert[0] or 'System' }}
+                                </span>
+                            </div>
+
+                            <div>
+                                <span class="detail-label">Timestamp</span>
+                                <span class="detail-value">
+                                    {{ alert[2] }}
+                                </span>
+                            </div>
+                        </div>
+
+                    </article>
+                {% endfor %}
+            </section>
+
+        {% else %}
+
+            <!-- Empty state -->
+            <section class="no-alerts">
+                <span class="no-alerts-icon" aria-hidden="true">&#10003;</span>
+
+                <h2>No Security Alerts</h2>
+
+                <p>
+                    No security alerts have been recorded. New alerts will
+                    appear here when your detection logic identifies them.
+                </p>
+            </section>
+
+        {% endif %}
+
+    </main>
+
+</body>
+</html>

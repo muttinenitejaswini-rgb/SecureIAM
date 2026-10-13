@@ -1,0 +1,441 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureIAM | Identity and Access Management</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f1f7ff;
+            color: #10244c;
+        }
+
+        .navbar {
+            min-height: 72px;
+            padding: 16px 7%;
+            background: #071b38;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #174a85;
+        }
+
+        .brand {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .brand span {
+            color: #2f91ff;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .nav-links a {
+            color: #e2edff;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .nav-links a:hover {
+            color: #47a5ff;
+        }
+
+        .hero {
+            background: linear-gradient(115deg, #0a2853, #06172f 65%, #103e83);
+            color: white;
+            padding: 75px 7%;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            align-items: center;
+            gap: 45px;
+            min-height: 420px;
+        }
+
+        .eyebrow {
+            color: #42a5ff;
+            font-weight: bold;
+            letter-spacing: 2px;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 {
+            font-size: clamp(42px, 5vw, 68px);
+            line-height: 1.08;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 span {
+            color: #3297ff;
+        }
+
+        .hero h2 {
+            font-size: clamp(22px, 2.5vw, 32px);
+            line-height: 1.3;
+            margin-bottom: 18px;
+        }
+
+        .hero p {
+            color: #d0e2ff;
+            font-size: 17px;
+            line-height: 1.8;
+            max-width: 600px;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 28px;
+            padding: 15px 25px;
+            border-radius: 9px;
+            background: #1678f8;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .button:hover {
+            background: #0863d9;
+        }
+
+        .hero-visual {
+            min-height: 270px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .shield {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            border: 1px solid #2279ce;
+            box-shadow: 0 0 0 22px rgba(23, 120, 248, 0.08),
+                        0 0 65px rgba(27, 135, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 100px;
+            background: radial-gradient(circle, #164f94, #09254c);
+        }
+
+        .mini-card {
+            position: absolute;
+            background: rgba(12, 55, 105, 0.85);
+            border: 1px solid #2479ce;
+            border-radius: 10px;
+            padding: 13px 15px;
+            color: #e5f2ff;
+            font-size: 13px;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .mini-card strong {
+            display: block;
+            color: #58b5ff;
+            font-size: 15px;
+        }
+
+        .mini-one {
+            top: 5px;
+            left: 0;
+        }
+
+        .mini-two {
+            top: 5px;
+            right: 0;
+        }
+
+        .mini-three {
+            bottom: 5px;
+            left: 0;
+        }
+
+        .mini-four {
+            bottom: 5px;
+            right: 0;
+        }
+
+        .features {
+            padding: 45px 7%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 30px;
+            margin-bottom: 28px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #dfebfa;
+            box-shadow: 0 5px 18px rgba(19, 61, 115, 0.06);
+        }
+
+        .feature-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            margin-bottom: 18px;
+            background: #e2efff;
+        }
+
+        .feature-card h3 {
+            font-size: 17px;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            color: #526789;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .cta {
+            margin: 0 7% 35px;
+            padding: 28px 35px;
+            background: linear-gradient(100deg, #102c56, #124b99);
+            border: 1px solid #277cde;
+            border-radius: 12px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .cta h2 {
+            margin-bottom: 10px;
+        }
+
+        .cta p {
+            color: #d3e5ff;
+            line-height: 1.6;
+        }
+
+        .cta .button {
+            margin-top: 0;
+            white-space: nowrap;
+        }
+
+        footer {
+            padding: 22px 7%;
+            background: #071b38;
+            color: #c5d8f3;
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+            font-size: 13px;
+        }
+
+        @media (max-width: 950px) {
+            .hero {
+                grid-template-columns: 1fr;
+                padding-top: 55px;
+                padding-bottom: 55px;
+            }
+
+            .hero-visual {
+                min-height: 300px;
+            }
+
+            .feature-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+            .navbar {
+                padding: 18px 5%;
+            }
+
+            .nav-links {
+                gap: 17px;
+                flex-wrap: wrap;
+            }
+
+            .hero, .features {
+                padding-left: 5%;
+                padding-right: 5%;
+            }
+
+            .hero-visual {
+                min-height: 240px;
+            }
+
+            .shield {
+                width: 145px;
+                height: 145px;
+                font-size: 65px;
+            }
+
+            .mini-card {
+                font-size: 11px;
+                padding: 8px;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta {
+                margin-left: 5%;
+                margin-right: 5%;
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="brand">🛡️ Secure<span>IAM</span></div>
+
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="{{ url_for('login') }}">Login</a>
+            <a href="#features">About</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div>
+            <div class="eyebrow">SECURE &nbsp; • &nbsp; CONTROL &nbsp; • &nbsp; MANAGE</div>
+
+            <h1>Secure<span>IAM</span></h1>
+
+            <h2>Role-Based Identity and Access Management System</h2>
+
+            <p>
+                Protect your users, manage access, and monitor security
+                with a modern identity and access management solution.
+            </p>
+
+            <a class="button" href="{{ url_for('login') }}">
+                Get Started &nbsp; → 
+            </a>
+        </div>
+
+        <div class="hero-visual">
+            <div class="shield">🛡️</div>
+
+            <div class="mini-card mini-one">
+                <strong>♟</strong>
+                User Management
+            </div>
+
+            <div class="mini-card mini-two">
+                <strong>✓</strong>
+                Access Control
+            </div>
+
+            <div class="mini-card mini-three">
+                <strong>▤</strong>
+                Security Logs
+            </div>
+
+            <div class="mini-card mini-four">
+                <strong>⚠</strong>
+                Alerts & Monitoring
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <h2 class="section-title">Key Features</h2>
+
+        <div class="feature-grid">
+            <article class="feature-card">
+                <div class="feature-icon">🔐</div>
+                <h3>Secure Authentication</h3>
+                <p>
+                    Verify user identity with bcrypt password hashing
+                    and secure login processes.
+                </p>
+            </article>
+
+            <article class="feature-card">
+                <div class="feature-icon">👥</div>
+                <h3>Role-Based Access Control</h3>
+                <p>
+                    Separate admin and user permissions so everyone
+                    can access only what they need.
+                </p>
+            </article>
+
+            <article class="feature-card">
+                <div class="feature-icon">🗄️</div>
+                <h3>User Management</h3>
+                <p>
+                    Administrators can view users, change roles,
+                    and manage accounts securely.
+                </p>
+            </article>
+
+            <article class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3>Security Monitoring</h3>
+                <p>
+                    Track security events and generate alerts
+                    after repeated failed login attempts.
+                </p>
+            </article>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div>
+            <h2>Your Security, Our Priority</h2>
+            <p>
+                SecureIAM helps you manage identities, control access,
+                and monitor important security events.
+            </p>
+        </div>
+
+        <a class="button" href="{{ url_for('login') }}">
+            Login Now &nbsp; →
+        </a>
+    </section>
+
+    <footer>
+        <div><strong>SecureIAM</strong> &nbsp; | &nbsp; Safe Access. Stronger Security.</div>
+        <div>SecureIAM — Identity and Access Management</div>
+    </footer>
+
+</body>
+</html>

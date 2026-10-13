@@ -1,0 +1,222 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SecureIAM</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .welcome-section {
+            margin-bottom: 25px;
+        }
+
+        .welcome-section p {
+            color: #64748b;
+            margin-top: 8px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+            margin-top: 25px;
+        }
+
+        .dashboard-card {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 3px 10px rgba(15, 23, 42, 0.05);
+        }
+
+        .dashboard-card h3 {
+            margin-top: 0;
+            margin-bottom: 18px;
+            color: #1e293b;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #64748b;
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: #1e293b;
+            overflow-wrap: anywhere;
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .role-badge.admin {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .quick-link {
+            display: block;
+            padding: 13px 15px;
+            margin-bottom: 10px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            color: #2563eb;
+            text-decoration: none;
+            transition: background 0.2s ease;
+        }
+
+        .quick-link:hover {
+            background: #eff6ff;
+        }
+
+        .quick-link:last-child {
+            margin-bottom: 0;
+        }
+
+        .user-note {
+            padding: 15px;
+            background: #eff6ff;
+            border-radius: 8px;
+            color: #1e40af;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 700px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-row {
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <h2>SecureIAM</h2>
+
+        <div class="nav-links">
+            
+            <a href="/dashboard">Dashboard</a>
+
+            {% if session.get("role") == "admin" %}
+                <a href="/admin">Admin</a>
+                <a href="/users">Manage Users</a>
+                <a href="/security-logs">Security Logs</a>
+                <a href="/security-alerts">Security Alerts</a>
+            {% endif %}
+            
+<form action="{{ url_for('logout') }}" method="POST" style="display: inline;">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit" class="logout-button">Logout</button>
+</form>
+
+
+            
+<form action="{{ url_for('logout') }}" method="POST" style="display: inline;">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit" class="logout-button">Logout</button>
+</form>
+
+        </div>
+    </nav>
+
+    <main class="container">
+
+        <section class="welcome-section">
+            <h1>Welcome, {{ session.get("username") }}!</h1>
+            <p>Your SecureIAM identity and access management dashboard.</p>
+        </section>
+
+        <section class="dashboard-grid">
+
+            <div class="dashboard-card">
+                <h3>Account Information</h3>
+
+                <div class="info-row">
+                    <span class="info-label">Username</span>
+                    <span class="info-value">
+                        {{ session.get("username") }}
+                    </span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">Account Role</span>
+                    <span class="info-value">
+                        <span class="role-badge {% if session.get('role') == 'admin' %}admin{% endif %}">
+                            {{ session.get("role")|capitalize }}
+                        </span>
+                    </span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label">Access Status</span>
+                    <span class="info-value">Authenticated</span>
+                </div>
+            </div>
+
+            <div class="dashboard-card">
+                <h3>Quick Access</h3>
+
+                {% if session.get("role") == "admin" %}
+                    <a class="quick-link" href="/admin">
+                        Admin Dashboard →
+                    </a>
+
+                    <a class="quick-link" href="/users">
+                        Manage Users →
+                    </a>
+
+                    <a class="quick-link" href="/security-logs">
+                        View Security Logs →
+                    </a>
+
+                    <a class="quick-link" href="/security-alerts">
+                        View Security Alerts →
+                    </a>
+                {% else %}
+                    <div class="user-note">
+                        <strong>Normal User Account</strong>
+                        <p>
+                            You are successfully logged in. Your access to
+                            system features is limited according to your
+                            assigned role.
+                        </p>
+                    </div>
+                {% endif %}
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>

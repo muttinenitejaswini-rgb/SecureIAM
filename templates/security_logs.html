@@ -1,0 +1,226 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Security Logs | SecureIAM</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .logs-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 26px;
+        }
+
+        .logs-header h1 {
+            margin: 0 0 8px;
+            font-size: 30px;
+            color: #0f172a;
+        }
+
+        .logs-subtitle {
+            margin: 0;
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        .back-link {
+            display: inline-block;
+            padding: 10px 15px;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #2563eb;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            background: #eff6ff;
+            text-decoration: none;
+        }
+
+        .logs-card {
+            padding: 24px;
+            background: #ffffff;
+            border: 1px solid #dbe4f0;
+            border-radius: 14px;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+        }
+
+        .logs-card-heading {
+            margin: 0 0 20px;
+            color: #172b4d;
+            font-size: 21px;
+        }
+
+        .logs-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .logs-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .logs-table th,
+        .logs-table td {
+            padding: 15px 16px;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: top;
+        }
+
+        .logs-table th {
+            background: #eff6ff;
+            color: #475569;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+
+        .logs-table td {
+            color: #334155;
+            font-size: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        .logs-table tbody tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        .logs-table tbody tr:hover {
+            background: #eff6ff;
+        }
+
+        .logs-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .log-username {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .empty-state {
+            padding: 35px 16px;
+            text-align: center;
+            color: #64748b;
+        }
+
+        .empty-state p {
+            margin: 0;
+        }
+
+        @media (max-width: 600px) {
+            .logs-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .logs-header h1 {
+                font-size: 26px;
+            }
+
+            .logs-card {
+                padding: 16px;
+            }
+
+            .logs-table th,
+            .logs-table td {
+                padding: 11px 10px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <h2>SecureIAM</h2>
+
+        <div class="nav-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/admin">Admin</a>
+            <a href="/users">Manage Users</a>
+            <a href="/security-logs" aria-current="page">Security Logs</a>
+            <a href="/security-alerts">Security Alerts</a>
+            
+<form action="{{ url_for('logout') }}" method="POST" style="display: inline;">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit" class="logout-button">Logout</button>
+</form>
+
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <main class="container">
+
+        <header class="logs-header">
+            <div>
+                <h1>Security Event Logs</h1>
+                <p class="logs-subtitle">
+                    Review recorded authentication and account security events.
+                </p>
+            </div>
+
+            <a href="/admin" class="back-link">
+                &larr; Back to Admin Dashboard
+            </a>
+        </header>
+
+        <!-- Logs table -->
+        <section class="logs-card">
+            <h2 class="logs-card-heading">Recorded Events</h2>
+
+            <div class="logs-table-wrapper">
+                <table class="logs-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Username</th>
+                            <th scope="col">Event</th>
+                            <th scope="col">Timestamp</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for log in logs %}
+                        <tr>
+                            <td class="log-username">
+                                {{ log[0] or 'System' }}
+                            </td>
+                            <td>{{ log[1] }}</td>
+                            <td>{{ log[2] }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="3" class="empty-state">
+                                <p>No security events have been recorded yet.</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+</body>
+</html>
